@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="about.css">
+</head>
+<body>
+    
+  <section class="profile-section py-8 bg-gray-50">
+  <div class="text-center mb-6">
+    <a href="index.html">
+      <button class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition duration-200 shadow-lg">Back Home</button>
+    </a>
+  </div>
+  <div class="container mx-auto px-4 lg:px-8">
+    <!-- Profile Card -->
+    <div class="profile-card flex flex-col md:flex-row justify-center items-center border shadow-lg p-6 font-serif rounded-2xl bg-white max-w-4xl mx-auto">
+      <!-- Foto -->
+      <div class="foto-wajah w-[8rem] md:w-[12rem] m-4">
+        <img id="foto" src="" alt="Foto" class=" shadow-lg w-full">
+      </div>
+      <!-- Profile Details -->
+      <div class="profile-details mt-4 md:mt-0 md:ml-8 text-center md:text-left">
+        <p class="text-xl md:text-2xl my-2 bg-gray-100 rounded-lg p-4 shadow-sm">Nama: <span id="nama"></span></p>
+        <p class="text-xl md:text-2xl my-2 bg-gray-100 rounded-lg p-4 shadow-sm">Klasifikasi: <span id="klasifikasi"></span></p>
+        <p class="text-xl md:text-2xl my-2 bg-gray-100 rounded-lg p-4 shadow-sm">Jabatan: <span id="jabatan"></span></p>
+      </div>
+    </div>
+    <!-- Sertifikat Image -->
+    <div class="img-sertifikat flex justify-center mt-8">
+      <img id="foto_sertifikat" src="" alt="Sertifikat" class="rounded-lg shadow-md w-full max-w-[90%] lg:max-w-[60%]">
+    </div>
+  </div>
+</section>
+
+
+    <script>
+      // Ambil ID dari URL (misalnya about.html?id=1)
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      // Fetch data dari server (backend) menggunakan ID yang didapat dari URL
+      fetch(`http://localhost:3002/struktur/${id}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network tidak merespon dengan baik');
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Menampilkan data ke halaman HTML
+          document.getElementById('nama').textContent = data.nama;
+          document.getElementById('klasifikasi').textContent = data.klasifikasi;
+          document.getElementById('jabatan').textContent = data.jabatan;
+          document.getElementById('foto').src = data.foto;
+          document.getElementById('foto_sertifikat').src = data.foto_sertifikat;
+        })
+        .catch(err => {
+          console.error('Fetch error: ', err);
+        });
+    </script>
+</body>
+</html>

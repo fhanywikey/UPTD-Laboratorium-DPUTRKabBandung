@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Services UPTD Laboratorium</title>
+    <link rel="stylesheet" href="">
+    <script src="script.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+  <section class="bg-gray-100 py-8 px-4">
+    <div class="mb-4">
+      <a href="index.html">
+        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-all">Back Home</button>
+      </a>
+    </div>
+    <div class="text-center mb-6">
+      <img id="foto_alat" src="" alt="Alat" class="w-48 h-48 object-cover mx-auto rounded-lg shadow-lg">
+      <h1 class="text-3xl font-bold mt-4"><span id="nama_alat">Nama Alat</span></h1>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Info Detail -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <p class="text-lg"><strong>Merk:</strong> <span id="merk"></span></p>
+        <p class="text-lg"><strong>Bahan:</strong> <span id="bahan"></span></p>
+        <p class="text-lg"><strong>Kondisi:</strong> <span id="kondisi"></span></p>
+        <p class="text-lg"><strong>Tahun Pembuatan:</strong> <span id="tahun_pembuatan"></span></p>
+        <p class="text-lg"><strong>Fungsi:</strong> <span id="fungsi"></span></p>
+      </div>
+      <!-- Deskripsi Alat -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-semibold mb-4">Deskripsi Alat</h1>
+        <p class="text-gray-700"><span id="deskripsi">Deskripsi alat akan muncul di sini.</span></p>
+      </div>
+    </div>
+  </section>
+  
+
+    <script>
+      // Ambil ID dari URL
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      // Fetch data dari server (backend) menggunakan ID yang didapat dari URL
+      fetch(`http://localhost:3002/alatalat/${id}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network tidak merespon dengan baik');
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Menampilkan data ke halaman HTML
+          document.getElementById('nama_alat').textContent = data.nama_alat;
+          document.getElementById('deskripsi').textContent = data.deskripsi;
+          document.getElementById('kondisi').textContent = data.kondisi;
+          document.getElementById('foto_alat').src = data.foto_alat;
+          document.getElementById('merk').textContent = data.merk;
+          document.getElementById('bahan').textContent = data.bahan;
+          document.getElementById('fungsi').textContent = data.fungsi;
+          document.getElementById('tahun_pembuatan').textContent = data.tahun_pembuatan;
+        })
+        .catch(err => {
+          console.error('Fetch error: ', err);
+        });
+    </script>
+</body>
+</html>
